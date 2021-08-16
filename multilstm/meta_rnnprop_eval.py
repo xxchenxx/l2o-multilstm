@@ -388,6 +388,9 @@ class MetaOptimizer(object):
         gt_tilde = [g / (tf.sqrt(v)+1e-8) for g, v in zip(gradients, vt_hat)]
 
       with tf.name_scope("deltas"):
+        print([net(m, g, s) for m, g, s in zip(mt_tilde, gt_tilde, state)])
+        assert False
+
         deltas, state_next = zip(*[net(m, g, s) for m, g, s in zip(mt_tilde, gt_tilde, state)])
         state_next = _nested_tuple(state_next)
         state_next = list(state_next)
