@@ -107,6 +107,7 @@ def main(_):
     config = tf.ConfigProto()
     config.gpu_options.allow_growth = True
     with ms.MonitoredSession() as sess:
+        writer = tf.summary.FileWriter("./test", get_session(sess).graph_def)
         def assign_func(val_x):
             sess.run(assign_ops, feed_dict={p: v for p, v in zip(p_val_x, val_x)})
 
