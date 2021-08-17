@@ -3,7 +3,7 @@ import numpy as np
 
 #a = pickle.load(open("mnist_multilstm_cl_rnnprop/rp.l2l-0", 'rb'))
 a = pickle.load(open("init-2.pkl", 'rb'))
-b = pickle.load(open("mnist_multilstm_cl_rnnprop/rp.l2l-1000", 'rb'))
+b = pickle.load(open("mnist_multilstm_cl_rnnprop/rp.l2l-0", 'rb'))
 
 for key in a:
     if (isinstance(a[key], dict)):
