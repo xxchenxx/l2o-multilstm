@@ -522,8 +522,8 @@ class MetaOptimizer(object):
 
           # net
           delta, state_next_si = net(mt_tilde, gt_tilde, st)
-          delta = [delt[0] for delt in delta]  
-          state_next_si = [state[0] for state in state_next_si]
+          delta = delta[0]
+          state_next_si = state_next_si[0]
           loss_t_sum += tf.reduce_sum((g_label - delta) * (g_label - delta)) * 0.5
           state_next_si = _nested_tuple(state_next_si)
           state_next.append(state_next_si)
