@@ -389,16 +389,10 @@ class MetaOptimizer(object):
 
       with tf.name_scope("deltas"):
         deltas, state_next = zip(*[net(m, g, s) for m, g, s in zip(mt_tilde, gt_tilde, state)])
-        deltas = [delta[0] for delta in deltas]
-        print(state)
-        print(state_next)
-        
+        deltas = [delta[0] for delta in deltas]  
         state_next = [state[0] for state in state_next]
-        print(state_next)
         state_next = _nested_tuple(state_next)
-        print(state_next)
         state_next = list(state_next)
-        print(state_next)
 
 
       return deltas, state_next, mt_next, vt_next
@@ -528,6 +522,8 @@ class MetaOptimizer(object):
 
           # net
           delta, state_next_si = net(mt_tilde, gt_tilde, st)
+          delta = [delt[0] for delt in delta]  
+          state_next_si = [state[0] for state in state_next_si]
           loss_t_sum += tf.reduce_sum((g_label - delta) * (g_label - delta)) * 0.5
           state_next_si = _nested_tuple(state_next_si)
           state_next.append(state_next_si)
