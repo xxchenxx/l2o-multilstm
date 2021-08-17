@@ -208,7 +208,7 @@ class StandardDeepLSTM(Network):
         self._rnns.append(snt.DeepRNN(self._cores, skip_connections=False,
                                 name="deep_rnn_{}".format(k)))
 
-        init = _get_layer_initializers(initializer, "linear", ("w", "b"))
+        init = _get_layer_initializers(initializer, "linear_{}".format(k), ("w", "b"))
         self._linears.append(snt.Linear(output_size, name="linear_{}".format(k), initializers=init))
 
         self.tanh_output = tanh_output
