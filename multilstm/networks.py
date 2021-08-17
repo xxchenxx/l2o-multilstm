@@ -145,8 +145,7 @@ def _get_layer_initializers(initializers, layer_name, fields):
 
   # No initializers specified.
   if initializers is None:
-    print("None")
-    return None
+    return tf.zeros_initializer()
 
   # Layer-specific initializer.
   if isinstance(initializers, dict) and layer_name in initializers:
