@@ -55,11 +55,11 @@ def run_epoch(sess, cost_op, ops, reset, num_unrolls,
       else:
         feed_rs = {}
       feed_dict = feed_rs
-      #index = tf.get_default_graph().get_tensor_by_name('vars_optimizer/index:0')
+      index = tf.get_default_graph().get_tensor_by_name('vars_optimizer/index:0')
       
       for i in xrange(num_unrolls):
-        #index_mask = np.ones(1) * int(i / num_unrolls * 1)
-        #feed_dict[index] = index_mask.astype(np.int32)
+        index_mask = np.ones(1) * int(i / num_unrolls * 1)
+        feed_dict[index] = index_mask.astype(np.int32)
         if step is not None:
             feed_dict[step] = i*unroll_len+1
         cost = sess.run([cost_op] + ops, feed_dict=feed_dict)[0]
@@ -86,11 +86,11 @@ def run_eval_epoch(sess, cost_op, ops, num_unrolls, step=None, unroll_len=None, 
   # sess.run(reset)
   total_cost = []
   feed_dict = {}
-  #index = tf.get_default_graph().get_tensor_by_name('vars_optimizer/index:0')
+  index = tf.get_default_graph().get_tensor_by_name('vars_optimizer/index:0')
 
   for i in xrange(num_unrolls):
-    #index_mask =  np.ones(1) * int(i / num_unrolls * 1)
-    #feed_dict[index] = index_mask.astype(np.int32)
+    index_mask =  np.ones(1) * int(i / num_unrolls * 1)
+    feed_dict[index] = index_mask.astype(np.int32)
     if step is not None:
         feed_dict[step] = i * unroll_len + 1
     result = sess.run([cost_op] + ops, feed_dict=feed_dict)
@@ -105,12 +105,11 @@ def run_consecutive_eval_epoch(sess, cost_op, ops, num_unrolls, step=None, unrol
   # sess.run(reset)
   total_cost = []
   feed_dict = {}
-  #index = tf.get_default_graph().get_tensor_by_name('vars_optimizer/index:0')
-  
+  index = tf.get_default_graph().get_tensor_by_name('vars_optimizer/index:0')
 
   for i in xrange(num_unrolls):
-    #index_mask =  np.ones(1) * int(i / num_unrolls * 1)
-    #feed_dict[index] = index_mask.astype(np.int32)
+    index_mask =  np.ones(1) * int(i / num_unrolls * 1)
+    feed_dict[index] = index_mask.astype(np.int32)
     if step is not None:
         feed_dict[step] = i * unroll_len + 1
     result = sess.run([cost_op] + ops, feed_dict=feed_dict)

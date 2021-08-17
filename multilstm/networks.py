@@ -41,8 +41,6 @@ def factory(net, net_options=(), net_path=None):
     with open(net_path, "rb") as f:
       net_options["initializer"] = pickle.load(f)
 
-      #print(net_options['initializer'])
-
   return net_class(**net_options)
 
 
@@ -144,7 +142,6 @@ def _get_layer_initializers(initializers, layer_name, fields):
 
   # No initializers specified.
   if initializers is None:
-    #return tf.zeros_initializer()
     return None
 
   # Layer-specific initializer.
@@ -181,7 +178,7 @@ class StandardDeepLSTM(Network):
     self._preprocess_name = preprocess_name
     self.counter = 0
     self.num_lstm = 2
-    #self.index = tf.placeholder(tf.int32, (1), name='index')
+    self.index = tf.placeholder(tf.int32, (1), name='index')
     
     if preprocess_name == 'fc':
       with tf.variable_scope(self._template.variable_scope):
@@ -236,27 +233,25 @@ class StandardDeepLSTM(Network):
 
     next_state_stack = []
     final_output_stack = []
-    
     for i in range(self.num_lstm):
       output, next_state = self._rnns[i](inputs, prev_state)
       final_output = self._linears[i](output)
       final_output_stack.append(final_output)
-      next_state_stack.append(next_state)
+      next_state_stack.append(tf.stack(list(sum(next_state, ())), 0))
+
+    next_state_final = []
+    final_output_stack = tf.stack(final_output_stack, 0) # [N,X,X]
+    next_state_stack = tf.stack(next_state_stack, 0) # [N,4,X,X]
+    
+    final_output_final = tf.gather(final_output_stack, self.index, axis=0)[0]
+    next_state_final = tf.gather(next_state_stack, self.index, axis=0)[0]
+
+    next_state_final_tuple = ((next_state_final[0], next_state_final[1]), (next_state_final[2],next_state_final[3]))
     
     if self.tanh_output:
-      return [tf.nn.tanh(final_output) * self._scale for final_output in final_output_stack], next_state_stack
+      return tf.nn.tanh(final_output_final) * self._scale, next_state_final_tuple
     else:
-      return [final_output * self._scale for final_output in final_output_stack], next_state_stack
-    '''
-
-    output, next_state = self._rnns[0](inputs, prev_state)
-    final_output = self._linears[0](output)
-
-    if self.tanh_output:
-      return tf.nn.tanh(final_output) * self._scale, next_state
-    else:
-      return final_output * self._scale, next_state
-    '''
+      return final_output_final * self._scale, next_state_final_tuple
 
   def initial_state_for_inputs(self, inputs, **kwargs):
     batch_size = inputs.get_shape().as_list()[0]
@@ -295,7 +290,7 @@ class CoordinateWiseDeepLSTM(StandardDeepLSTM):
     output, next_state = build_fn(reshaped_inputs, prev_state)
 
     # Recover original shape.
-    return [tf.reshape(transposed_o, input_shape) for transposed_o in output], next_state
+    return tf.reshape(output, input_shape), next_state
 
   def initial_state_for_inputs(self, inputs, **kwargs):
     reshaped_inputs = self._reshape_inputs(inputs)
@@ -319,8 +314,8 @@ class RNNprop(StandardDeepLSTM):
     output, next_state = build_fn(reshaped_inputs, prev_state)
 
     # Recover original shape.
-    return [tf.reshape(transposed_o, output_shape) for transposed_o in output], next_state
-    #return tf.reshape(output, output_shape), next_state
+    return tf.reshape(output, output_shape), next_state
+
   def initial_state_for_inputs(self, inputs, **kwargs):
     reshaped_inputs = tf.reshape(inputs, [-1, 1])
     return super(RNNprop, self).initial_state_for_inputs(
@@ -366,10 +361,10 @@ class KernelDeepLSTM(StandardDeepLSTM):
 
     build_fn = super(KernelDeepLSTM, self)._build
     output, next_state = build_fn(reshaped_inputs, prev_state)
-    transposed_output = [tf.transpose(o, [1, 0]) for o in output]
+    transposed_output = tf.transpose(output, [1, 0])
 
     # Recover original shape.
-    return [tf.reshape(transposed_o, input_shape) for transposed_o in transposed_output], next_state
+    return tf.reshape(transposed_output, input_shape), next_state
 
   def initial_state_for_inputs(self, inputs, **kwargs):
     """Batch size given inputs."""
