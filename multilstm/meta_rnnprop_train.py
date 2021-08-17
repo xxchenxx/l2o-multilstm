@@ -392,10 +392,14 @@ class MetaOptimizer(object):
         deltas = [delta[0] for delta in deltas]
         print(state)
         print(state_next)
-        assert False
+        
         state_next = [state[0] for state in state_next]
+        print(state_next)
         state_next = _nested_tuple(state_next)
+        print(state_next)
         state_next = list(state_next)
+        print(state_next)
+
 
       return deltas, state_next, mt_next, vt_next
 
