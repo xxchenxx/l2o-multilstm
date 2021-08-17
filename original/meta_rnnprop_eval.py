@@ -295,8 +295,7 @@ class MetaOptimizer(object):
       filename = os.path.join(path, "{}.l2l-{}".format(k, index))
       data = pickle.load(open(filename, "rb"))
       vars = snt.get_variables_in_module(net)
-      print(vars)
-      assert False
+      
       for v in vars:
         split = v.name.split(":")[0].split("/")
         module_name = split[-2]
