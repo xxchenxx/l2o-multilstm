@@ -61,9 +61,10 @@ flags.DEFINE_string("optimizers", "adam", ".")
 flags.DEFINE_float("mt_ratio", 0.3, "")
 flags.DEFINE_string("mt_ratios", "0.3 0.3 0.3", "")
 flags.DEFINE_integer("k", 1, "")
-
+flags.DEFINE_integer("seed", 1, "")
 
 def main(_):
+    tf.set_random_seed(FLAGS.seed)
     # Configuration.
     if FLAGS.if_cl:
         num_steps = [100, 200, 500, 1000, 1500, 2000, 2500, 3000]
