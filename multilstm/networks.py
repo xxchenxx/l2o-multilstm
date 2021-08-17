@@ -352,10 +352,10 @@ class KernelDeepLSTM(StandardDeepLSTM):
 
     build_fn = super(KernelDeepLSTM, self)._build
     output, next_state = build_fn(reshaped_inputs, prev_state)
-    transposed_output = tf.transpose(output, [1, 0])
+    transposed_output = [tf.transpose(o, [1, 0]) for o in output]
 
     # Recover original shape.
-    return tf.reshape(transposed_output, input_shape), next_state
+    return [tf.reshape(transposed_o, input_shape) for transposed_o in transposed_output], next_state
 
   def initial_state_for_inputs(self, inputs, **kwargs):
     """Batch size given inputs."""
