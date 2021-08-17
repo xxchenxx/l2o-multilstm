@@ -146,7 +146,8 @@ def _get_layer_initializers(initializers, layer_name, fields):
   # No initializers specified.
   if initializers is None:
     print("ZEROS")
-    return tf.zeros_initializer()
+    #return tf.zeros_initializer()
+    return None
 
   # Layer-specific initializer.
   if isinstance(initializers, dict) and layer_name in initializers:
@@ -204,6 +205,10 @@ class StandardDeepLSTM(Network):
           name = "lstm_{}_{}".format(i,k)
           init = _get_layer_initializers(initializer, name,
                                         ("w_gates", "b_gates"))
+          
+          init = {}
+          for key in snt.LSTM.get_possible_initializer_keys():
+            init[key] = snt.initializers.Zeros()
           self._cores.append(snt.LSTM(size, name=name, initializers=init))
 
         self._rnns.append(snt.DeepRNN(self._cores, skip_connections=False,
