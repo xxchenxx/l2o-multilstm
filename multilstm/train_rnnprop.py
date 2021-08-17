@@ -80,7 +80,7 @@ def main(_):
             os.mkdir(FLAGS.save_path)
 
     # Problem.
-    problem, net_config, net_assignments = util.get_config(FLAGS.problem, net_name="RNNprop", path="init-2.pkl")
+    problem, net_config, net_assignments = util.get_config(FLAGS.problem, net_name="RNNprop")
 
     # Optimizer setup.
     optimizer = meta.MetaOptimizer(FLAGS.num_mt, FLAGS.beta1, FLAGS.beta2, **net_config)
