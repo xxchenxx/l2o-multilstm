@@ -1,4 +1,5 @@
 import pickle
+import numpy as np
 
 a = pickle.load(open("mnist_multilstm_cl_rnnprop/rp.l2l-0", 'rb'))
 
