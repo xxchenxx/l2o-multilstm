@@ -112,6 +112,8 @@ def main(_):
             #pylint: disable=W0212
             session = session._sess
         return session
+    
+    assert False
     with ms.MonitoredSession() as sess:
         writer = tf.summary.FileWriter("./test", get_session(sess).graph_def)
         def assign_func(val_x):

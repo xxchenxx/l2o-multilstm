@@ -145,6 +145,7 @@ def _get_layer_initializers(initializers, layer_name, fields):
 
   # No initializers specified.
   if initializers is None:
+    print("None")
     return None
 
   # Layer-specific initializer.
