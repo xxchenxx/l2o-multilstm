@@ -281,7 +281,7 @@ class CoordinateWiseDeepLSTM(StandardDeepLSTM):
     output, next_state = build_fn(reshaped_inputs, prev_state)
 
     # Recover original shape.
-    return tf.reshape(output, input_shape), next_state
+    return [tf.reshape(transposed_o, input_shape) for transposed_o in output], next_state
 
   def initial_state_for_inputs(self, inputs, **kwargs):
     reshaped_inputs = self._reshape_inputs(inputs)
@@ -305,7 +305,7 @@ class RNNprop(StandardDeepLSTM):
     output, next_state = build_fn(reshaped_inputs, prev_state)
 
     # Recover original shape.
-    return tf.reshape(output, output_shape), next_state
+    return [tf.reshape(transposed_o, output_shape) for transposed_o in output], next_state
 
   def initial_state_for_inputs(self, inputs, **kwargs):
     reshaped_inputs = tf.reshape(inputs, [-1, 1])
