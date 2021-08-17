@@ -58,7 +58,7 @@ def run_epoch(sess, cost_op, ops, reset, num_unrolls,
       index = tf.get_default_graph().get_tensor_by_name('vars_optimizer/index:0')
       
       for i in xrange(num_unrolls):
-        index_mask = np.ones(1) * int(i / num_unrolls * 2)
+        index_mask = np.ones(1) * int(i / num_unrolls * 5)
         feed_dict[index] = index_mask.astype(np.int32)
         if step is not None:
             feed_dict[step] = i*unroll_len+1
@@ -89,7 +89,7 @@ def run_eval_epoch(sess, cost_op, ops, num_unrolls, step=None, unroll_len=None, 
   index = tf.get_default_graph().get_tensor_by_name('vars_optimizer/index:0')
 
   for i in xrange(num_unrolls):
-    index_mask =  np.ones(1) * int(i / num_unrolls * 2)
+    index_mask =  np.ones(1) * int(i / num_unrolls * 5)
     feed_dict[index] = index_mask.astype(np.int32)
     if step is not None:
         feed_dict[step] = i * unroll_len + 1
@@ -108,7 +108,7 @@ def run_consecutive_eval_epoch(sess, cost_op, ops, num_unrolls, step=None, unrol
   index = tf.get_default_graph().get_tensor_by_name('vars_optimizer/index:0')
 
   for i in xrange(num_unrolls):
-    index_mask =  np.ones(1) * int(i / num_unrolls * 2)
+    index_mask =  np.ones(1) * int(i / num_unrolls * 5)
     feed_dict[index] = index_mask.astype(np.int32)
     if step is not None:
         feed_dict[step] = i * unroll_len + 1
