@@ -177,7 +177,7 @@ class StandardDeepLSTM(Network):
     self._scale = scale
     self._preprocess_name = preprocess_name
     self.counter = 0
-    self.num_lstm = 1
+    self.num_lstm = 2
     #self.index = tf.placeholder(tf.int32, (1), name='index')
     
     if preprocess_name == 'fc':
