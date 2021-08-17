@@ -242,6 +242,7 @@ class StandardDeepLSTM(Network):
 
     next_state_stack = []
     final_output_stack = []
+    '''
     for i in range(self.num_lstm):
       output, next_state = self._rnns[i](inputs, prev_state)
       final_output = self._linears[i](output)
@@ -252,6 +253,15 @@ class StandardDeepLSTM(Network):
       return [tf.nn.tanh(final_output) * self._scale for final_output in final_output_stack], next_state_stack
     else:
       return [final_output * self._scale for final_output in final_output_stack], next_state_stack
+    '''
+
+    output, next_state = self._rnns[0](inputs, prev_state)
+    final_output = self._linears[0](output)
+
+    if self.tanh_output:
+      return tf.nn.tanh(final_output) * self._scale, next_state
+    else:
+      return final_output * self._scale, next_state
 
   def initial_state_for_inputs(self, inputs, **kwargs):
     batch_size = inputs.get_shape().as_list()[0]
