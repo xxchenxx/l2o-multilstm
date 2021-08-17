@@ -389,9 +389,8 @@ class MetaOptimizer(object):
 
       with tf.name_scope("deltas"):
         deltas, state_next = zip(*[net(m, g, s) for m, g, s in zip(mt_tilde, gt_tilde, state)])
-        print(deltas)
-        print(state_next)
-        assert False
+        deltas = [delta[0] for delta in deltas]
+        state_next = [state[0] for state in state_next]
         state_next = _nested_tuple(state_next)
         state_next = list(state_next)
 
