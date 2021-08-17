@@ -64,6 +64,7 @@ flags.DEFINE_integer("k", 1, "")
 
 
 def main(_):
+    tf.set_random_seed(1)
     # Configuration.
     if FLAGS.if_cl:
         num_steps = [100, 200, 500, 1000, 1500, 2000, 2500, 3000]
