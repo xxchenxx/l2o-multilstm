@@ -128,6 +128,8 @@ def main(_):
         num_eval = 0
         improved = False
         mti = -1
+        optimizer.save(sess, FLAGS.save_path, 1000)
+
         for e in xrange(FLAGS.num_epochs):
             # Pick a task if it's multi-task learning.
             if FLAGS.if_mt:
