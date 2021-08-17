@@ -208,7 +208,7 @@ class StandardDeepLSTM(Network):
           
           init = {}
           for key in snt.LSTM.get_possible_initializer_keys():
-            init[key] = snt.initializers.Zeros()
+            init[key] = tf.zeros_initializer()
           self._cores.append(snt.LSTM(size, name=name, initializers=init))
 
         self._rnns.append(snt.DeepRNN(self._cores, skip_connections=False,
