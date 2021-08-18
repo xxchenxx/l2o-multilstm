@@ -245,7 +245,7 @@ class StandardDeepLSTM(Network):
     
     final_output_final = tf.reduce_mean(tf.gather(final_output_stack, self.index, axis=0), axis=0)
     next_state_final = tf.reduce_mean(tf.gather(next_state_stack, self.index, axis=0), axis=0)
-
+    print(final_output_final)
     next_state_final_tuple = ((next_state_final[0], next_state_final[1]), (next_state_final[2],next_state_final[3]))
     
     if self.tanh_output:
