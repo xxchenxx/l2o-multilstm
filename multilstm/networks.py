@@ -178,7 +178,7 @@ class StandardDeepLSTM(Network):
     self._preprocess_name = preprocess_name
     self.counter = 0
     self.num_lstm = 5
-    self.index = tf.placeholder(tf.int32, (self.num_lstm), name='index')
+    self.index = tf.placeholder(tf.int32, (1), name='index')
     
     if preprocess_name == 'fc':
       with tf.variable_scope(self._template.variable_scope):
@@ -243,10 +243,9 @@ class StandardDeepLSTM(Network):
     final_output_stack = tf.stack(final_output_stack, 0) # [N,X,X]
     next_state_stack = tf.stack(next_state_stack, 0) # [N,4,X,X]
     
-    final_output_final = tf.reduce_mean(tf.gather(final_output_stack, self.index, axis=0), axis=0)
-    next_state_final = tf.reduce_mean(tf.gather(next_state_stack, self.index, axis=0), axis=0)
-    print(tf.gather(final_output_stack, self.index, axis=0))
-    print(final_output_final)
+    final_output_final = tf.gather(final_output_stack, self.index, axis=0)[0]
+    next_state_final = tf.gather(next_state_stack, self.index, axis=0)[0]
+
     next_state_final_tuple = ((next_state_final[0], next_state_final[1]), (next_state_final[2],next_state_final[3]))
     
     if self.tanh_output:
