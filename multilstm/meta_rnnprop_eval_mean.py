@@ -162,14 +162,14 @@ MetaStep = collections.namedtuple("MetaStep", "step, update, reset, fx, x")
 
 
 def _make_nets(variables, config, net_assignments):
-  """Creates the optimizer networks.
+  """Creates the optimizer networks_mean
 
   Args:
     variables: A list of variables to be optimized.
     config: A dictionary of network configurations, each of which will be
-        passed to networks.Factory to construct a single optimizer net.
+        passed to networks_meanFactory to construct a single optimizer net.
     net_assignments: A list of tuples where each tuple is of the form (netid,
-        variable_names) and is used to assign variables to networks. netid must
+        variable_names) and is used to assign variables to networks_mean netid must
         be a key in config.
 
   Returns:
@@ -194,7 +194,7 @@ def _make_nets(variables, config, net_assignments):
     with tf.variable_scope("vars_optimizer"):
       key = next(iter(config))
       kwargs = config[key]
-      net = networks.factory(**kwargs)
+      net = networks_meanfactory(**kwargs)
 
     nets = {key: net}
     keys = [key]
@@ -207,7 +207,7 @@ def _make_nets(variables, config, net_assignments):
       for key, names in net_assignments:
         if key in nets:
           raise ValueError("Repeated netid in net_assigments.")
-        nets[key] = networks.factory(**config[key])
+        nets[key] = networks_meanfactory(**config[key])
         subset = [name_to_index[name] for name in names]
         keys.append(key)
         subsets.append(subset)
@@ -232,7 +232,7 @@ class MetaOptimizer(object):
 
     Args:
       **kwargs: A set of keyword arguments mapping network identifiers (the
-          keys) to parameters that will be passed to networks.Factory (see docs
+          keys) to parameters that will be passed to networks_meanFactory (see docs
           for more info).  These can be used to assign different optimizee
           parameters to different optimizers (see net_assignments in the
           meta_loss method).
@@ -268,7 +268,7 @@ class MetaOptimizer(object):
       else:
         filename = os.path.join(path, "{}.l2l".format(k))
         key = filename
-      net_vars = networks.save(net, sess, filename=filename)
+      net_vars = networks_meansave(net, sess, filename=filename)
       result[key] = net_vars
     return result
 
