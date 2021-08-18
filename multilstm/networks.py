@@ -243,8 +243,8 @@ class StandardDeepLSTM(Network):
     final_output_stack = tf.stack(final_output_stack, 0) # [N,X,X]
     next_state_stack = tf.stack(next_state_stack, 0) # [N,4,X,X]
     
-    final_output_final = tf.reduce_mean(tf.gather(final_output_stack, self.index, axis=0), 0)
-    next_state_final = tf.reduce_mean(tf.gather(next_state_stack, self.index, axis=0), 0)
+    final_output_final = tf.reduce_mean(tf.gather(final_output_stack, self.index, axis=0), axis=0)
+    next_state_final = tf.reduce_mean(tf.gather(next_state_stack, self.index, axis=0), axis=0)
 
     next_state_final_tuple = ((next_state_final[0], next_state_final[1]), (next_state_final[2],next_state_final[3]))
     
