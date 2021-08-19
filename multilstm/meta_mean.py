@@ -29,7 +29,7 @@ import tensorflow as tf
 from tensorflow.python.framework import ops
 from tensorflow.python.util import nest
 
-import networks_mean as networks
+import meta_mean as meta
 
 
 def _nested_assign(ref, value):
