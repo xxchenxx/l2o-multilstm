@@ -89,7 +89,7 @@ def main(_):
         import numpy as np
         for e in xrange(FLAGS.num_epochs):
             # Training.
-            time, cost = util.run_consecutive_eval_epoch(sess, cost_op, [update], num_unrolls, epoch=e)
+            time, cost = util.run_eval_epoch(sess, cost_op, [update], num_unrolls, epoch=e)
             total_time += time
             total_cost += sum(cost) / num_unrolls
             loss_record += cost
