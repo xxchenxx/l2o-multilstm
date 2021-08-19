@@ -27,7 +27,7 @@ from six.moves import xrange
 from tensorflow.contrib.learn.python.learn import monitored_session as ms
 import tensorflow as tf
 
-import meta_mean
+import meta_mean as meta
 import util
 
 flags = tf.flags
