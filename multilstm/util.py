@@ -99,6 +99,25 @@ def run_eval_epoch(sess, cost_op, ops, num_unrolls, step=None, unroll_len=None, 
   
   return timer() - start, total_cost
 
+def run_eval_every_k_epoch(sess, cost_op, ops, num_unrolls, k, step=None, unroll_len=None, epoch = 0):
+  """Runs one optimization epoch."""
+  start = timer()
+  # sess.run(reset)
+  total_cost = []
+  feed_dict = {}
+  index = tf.get_default_graph().get_tensor_by_name('vars_optimizer/index:0')
+
+  for i in xrange(num_unrolls):
+    index_mask =  np.ones(1) * (int(i * unroll_len / k) % 5)
+    feed_dict[index] = index_mask.astype(np.int32)
+    if step is not None:
+        feed_dict[step] = i * unroll_len + 1
+    result = sess.run([cost_op] + ops, feed_dict=feed_dict)
+    cost = result[0]
+    total_cost.append(cost)
+  
+  return timer() - start, total_cost
+
 def run_mean_eval_epoch(sess, cost_op, ops, num_unrolls, step=None, unroll_len=None, epoch = 0):
   """Runs one optimization epoch."""
   start = timer()
