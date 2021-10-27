@@ -194,13 +194,30 @@ class StandardDeepLSTM(Network):
     
       self._rnns = []
       self._linears = []
+      init_dicts = {}
       for k in range(self.num_lstm):
-        self._cores = []
         for i, size in enumerate(layers, start=1):
           name = "lstm_{}_{}".format(i,k)
           init = _get_layer_initializers(initializer, name,
                                         ("w_gates", "b_gates"))
-          self._cores.append(snt.LSTM(size, name=name, initializers=init))
+          init_dicts[name].append(init)
+
+      mean_init = {}
+      for i, size in enumerate(layers, start=1):
+        temp = 0
+        for k in range(self.num_lstm):
+          name = "lstm_{}_{}".format(i,k)
+          temp = temp + init_dicts[name]
+        temp = temp / self.num_lstm
+        mean_init["lstm_{}".format(i)] = temp
+
+
+
+      for k in range(self.num_lstm):
+        self._cores = []
+        for i, size in enumerate(layers, start=1):
+          name = "lstm_{}_{}".format(i,k)
+          self._cores.append(snt.LSTM(size, name=name, initializers=mean_init["lstm_{}".format(i)]))
 
         self._rnns.append(snt.DeepRNN(self._cores, skip_connections=False,
                                 name="deep_rnn_{}".format(k)))
