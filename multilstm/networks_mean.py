@@ -152,15 +152,14 @@ def _get_layer_initializers(initializers, layer_name, fields):
 
 class AddableDict():
   def __init__(self, _dict=None):
-    if _dict is None:
-      _dict = dict()
-      _dict['w_gates'] = 0
-      _dict['b_gates'] = 0
     self.dict = _dict
   
   def __add__(self, other):
-    self.dict['w_gates'] += other.dict['w_gates']
-    self.dict['b_gates'] += other.dict['b_gates']
+    if self.dict is None:
+      self.dict = dict(other.dict)
+    else:
+      self.dict['w_gates'] += other.dict['w_gates']
+      self.dict['b_gates'] += other.dict['b_gates']
   
   def __div__(self, n):
     self.dict['w_gates'] /= n
