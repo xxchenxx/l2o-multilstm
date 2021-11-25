@@ -200,6 +200,7 @@ class StandardDeepLSTM(Network):
           name = "lstm_{}_{}".format(i,k)
           init = _get_layer_initializers(initializer, name,
                                         ("w_gates", "b_gates"))
+          print(init)
           init_dicts[name] = init
 
       mean_init = {}
