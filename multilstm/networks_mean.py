@@ -164,8 +164,8 @@ class AddableDict():
     return self
   
   def div(self, n):
-    self.dict['w_gates'] /= n
-    self.dict['b_gates'] /= n
+    self.dict['w_gates'].value /= n
+    self.dict['b_gates'].value /= n
     return self
   
   def asdict(self):
