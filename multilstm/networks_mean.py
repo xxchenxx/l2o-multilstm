@@ -208,6 +208,7 @@ class StandardDeepLSTM(Network):
         temp = 0
         for k in range(self.num_lstm):
           name = "lstm_{}_{}".format(i,k)
+          print(init_dicts[name])
           temp = temp + init_dicts[name]
         temp = temp / self.num_lstm
         mean_init["lstm_{}".format(i)] = temp
