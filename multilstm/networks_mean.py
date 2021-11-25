@@ -151,7 +151,11 @@ def _get_layer_initializers(initializers, layer_name, fields):
   return _get_initializers(initializers, fields)
 
 class AddableDict():
-  def __init__(self, _dict):
+  def __init__(self, _dict=None):
+    if _dict is None:
+      _dict = dict()
+      _dict['w_gates'] = 0
+      _dict['b_gates'] = 0
     self.dict = _dict
   
   def __add__(self, other):
