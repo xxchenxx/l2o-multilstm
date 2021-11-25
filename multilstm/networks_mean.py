@@ -150,6 +150,22 @@ def _get_layer_initializers(initializers, layer_name, fields):
 
   return _get_initializers(initializers, fields)
 
+class AddableDict():
+  def __init__(self, _dict):
+    self.dict = _dict
+  
+  def __add__(self, other):
+    self.dict['w_gates'] += other['w_gates']
+    self.dict['b_gates'] += other['b_gates']
+  
+  def __div__(self, n):
+    self.dict['w_gates'] /= n
+    self.dict['b_gates'] /= n
+  
+  def asdict(self):
+    return dict(self.dict)
+
+  
 
 class StandardDeepLSTM(Network):
   """LSTM layers with a Linear layer on top."""
@@ -201,8 +217,7 @@ class StandardDeepLSTM(Network):
           name = "lstm_{}_{}".format(i,k)
           init = _get_layer_initializers(initializer, name,
                                         ("w_gates", "b_gates"))
-          print(init)
-          init_dicts[name] = init
+          init_dicts[name] = AddableDict(init)
 
       mean_init = {}
       for i, size in enumerate(layers, start=1):
@@ -212,7 +227,7 @@ class StandardDeepLSTM(Network):
           print(init_dicts[name])
           temp = temp + init_dicts[name]
         temp = temp / self.num_lstm
-        mean_init["lstm_{}".format(i)] = temp
+        mean_init["lstm_{}".format(i)] = dict(temp)
 
       for k in range(self.num_lstm):
         self._cores = []
