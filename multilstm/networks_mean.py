@@ -225,7 +225,7 @@ class StandardDeepLSTM(Network):
 
       mean_init = {}
       for i, size in enumerate(layers, start=1):
-        temp = 0
+        temp = AddableDict()
         for k in range(self.num_lstm):
           name = "lstm_{}_{}".format(i,k)
           print(init_dicts[name])
