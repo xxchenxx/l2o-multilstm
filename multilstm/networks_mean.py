@@ -163,9 +163,10 @@ class AddableDict():
 
     return self
   
-  def __div__(self, n):
+  def div(self, n):
     self.dict['w_gates'] /= n
     self.dict['b_gates'] /= n
+    return self
   
   def asdict(self):
     return dict(self.dict)
@@ -232,7 +233,7 @@ class StandardDeepLSTM(Network):
           print(init_dicts[name])
           print(temp)
           temp = temp + init_dicts[name]
-        temp = temp / self.num_lstm
+        temp = temp.div(self.num_lstm)
         mean_init["lstm_{}".format(i)] = dict(temp)
 
       for k in range(self.num_lstm):
