@@ -199,7 +199,7 @@ class StandardDeepLSTM(Network):
         for i, size in enumerate(layers, start=1):
           name = "lstm_{}_{}".format(i,k)
           if not name in init_dicts:
-            init_dicts[name] = {}
+            init_dicts[name] = []
           init = _get_layer_initializers(initializer, name,
                                         ("w_gates", "b_gates"))
           init_dicts[name].append(init)
