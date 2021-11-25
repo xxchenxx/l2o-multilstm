@@ -195,6 +195,7 @@ class StandardDeepLSTM(Network):
       self._rnns = []
       self._linears = []
       init_dicts = {}
+      print(initializer)
       for k in range(self.num_lstm):
         for i, size in enumerate(layers, start=1):
           name = "lstm_{}_{}".format(i,k)
