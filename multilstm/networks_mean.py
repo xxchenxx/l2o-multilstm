@@ -234,7 +234,7 @@ class StandardDeepLSTM(Network):
           print(temp)
           temp = temp + init_dicts[name]
         temp = temp.div(self.num_lstm)
-        mean_init["lstm_{}".format(i)] = dict(temp)
+        mean_init["lstm_{}".format(i)] = temp.asdict()
 
       for k in range(self.num_lstm):
         self._cores = []
