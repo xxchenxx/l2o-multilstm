@@ -159,8 +159,8 @@ class AddableDict():
     self.dict = _dict
   
   def __add__(self, other):
-    self.dict['w_gates'] += other['w_gates']
-    self.dict['b_gates'] += other['b_gates']
+    self.dict['w_gates'] += other.dict['w_gates']
+    self.dict['b_gates'] += other.dict['b_gates']
   
   def __div__(self, n):
     self.dict['w_gates'] /= n
