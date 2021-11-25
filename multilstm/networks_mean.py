@@ -160,6 +160,8 @@ class AddableDict():
     else:
       self.dict['w_gates'] += other.dict['w_gates']
       self.dict['b_gates'] += other.dict['b_gates']
+
+    return self
   
   def __div__(self, n):
     self.dict['w_gates'] /= n
