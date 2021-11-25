@@ -198,11 +198,9 @@ class StandardDeepLSTM(Network):
       for k in range(self.num_lstm):
         for i, size in enumerate(layers, start=1):
           name = "lstm_{}_{}".format(i,k)
-          if not name in init_dicts:
-            init_dicts[name] = []
           init = _get_layer_initializers(initializer, name,
                                         ("w_gates", "b_gates"))
-          init_dicts[name].append(init)
+          init_dicts[name] = init
 
       mean_init = {}
       for i, size in enumerate(layers, start=1):
@@ -212,8 +210,6 @@ class StandardDeepLSTM(Network):
           temp = temp + init_dicts[name]
         temp = temp / self.num_lstm
         mean_init["lstm_{}".format(i)] = temp
-
-
 
       for k in range(self.num_lstm):
         self._cores = []
