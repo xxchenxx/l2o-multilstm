@@ -158,8 +158,8 @@ class AddableDict():
     if self.dict is None:
       self.dict = dict(other.dict)
     else:
-      self.dict['w_gates'] = self.dict['w_gates'] + other.dict['w_gates']
-      self.dict['b_gates'] = self.dict['b_gates'] + other.dict['b_gates']
+      self.dict['w_gates'].value = self.dict['w_gates'].value + other.dict['w_gates'].value
+      self.dict['b_gates'].value = self.dict['b_gates'].value + other.dict['b_gates'].value
 
     return self
   
